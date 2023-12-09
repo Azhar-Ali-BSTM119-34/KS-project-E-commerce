@@ -1,4 +1,7 @@
 import React from "react";
+import { auth } from "../config/Firebase-config";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 import pic from "../assets/bannerAuth.png";
 
 function SignUp() {
@@ -9,9 +12,31 @@ function SignUp() {
   const [pass1, setPass1] = React.useState("");
   const [pass2, setPass2] = React.useState("");
 
-  const handleSubmit = () => {
-    alert(pass1, pass2);
+  const Navigate = useNavigate(); // Get history object
+
+  const handleSignUp = async () => {
+    if (pass1 !== pass2) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        pass1
+      );
+      const user = userCredential.user;
+      console.log("User created:", user);
+      // Additional actions or redirection after successful signup
+      // Redirect to login page after successful sign-up
+      Navigate("/Home");
+    } catch (error) {
+      console.error("Error creating user:", error.message);
+      // Handle the error, show a message, etc.
+    }
   };
+
   return (
     <div className="flex flex-row justify-center items-center  ">
       {/* image */}
@@ -21,7 +46,7 @@ function SignUp() {
       {/* form */}
       <div className="w-1/2 h-1/2  flex items-center justify-center">
         <form className="flex text-center flex-col justify-center items-center">
-          <h2 className="text-3xl font-semibold mb-6 text-center">Sign In </h2>
+          <h2 className="text-3xl font-semibold mb-6 text-center">Sign Up </h2>
           {/* Firstname input */}
           <input
             type="text"
@@ -40,7 +65,7 @@ function SignUp() {
             value={secondName}
             onChange={(e) => setSecondName(e.target.value)}
           />
-          {/* Username input */}
+          {/* Password input */}
           <input
             type="password"
             id="Password"
@@ -49,7 +74,7 @@ function SignUp() {
             value={pass1}
             onChange={(e) => setPass1(e.target.value)}
           />
-          {/* email Name input */}
+          {/* Email input */}
           <input
             type="email"
             id="email"
@@ -58,7 +83,7 @@ function SignUp() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          {/* Password input */}
+          {/* Confirm Password input */}
           <input
             type="password"
             id="Confirm Password"
@@ -67,6 +92,7 @@ function SignUp() {
             value={pass2}
             onChange={(e) => setPass2(e.target.value)}
           />
+          {/* Number input */}
           {/* Number input */}
           <input
             type="number"
@@ -77,21 +103,13 @@ function SignUp() {
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
 
-          {/* Forgot Password link
-          <button type="submit" onClick={handleSubmit}>
-            Forgot Password?
-          </button>
-
-           Sign In button 
-          <button type="button" onClick={handleSubmit}>
-            Sign In
-          </button> */}
+          {/* Sign Up button */}
           <button
             type="button"
-            class="py-2.5 px-20 me-2 mb-2 text-lg font-bold text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-            onClick={handleSubmit}
+            onClick={handleSignUp}
+            className="py-2.5 px-20 me-2 mb-2 text-lg font-bold text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
           >
-            Sign In
+            Sign Up
           </button>
         </form>
       </div>

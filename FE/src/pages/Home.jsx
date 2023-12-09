@@ -1,7 +1,14 @@
 import React from "react";
+import Header from "../Components/Header";
+import LandingPage from "./dashboard/LandingPage";
 
 function Home() {
-  return <div>Nav Bar sidebar</div>;
+  return (
+    <div>
+      <Header />
+      <LandingPage />
+    </div>
+  );
 }
 
 export default Home;
